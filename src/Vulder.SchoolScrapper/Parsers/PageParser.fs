@@ -6,6 +6,8 @@ open Serilog
 open Vulder.SchoolScrapper.Models.School
 open Vulder.SchoolScrapper.Models.Timetable
 
+let timetableKeywords = ["plan lekcji"; "plan zajęć"; "podział godzin"; "plan"; "podział"]
+
 let private logNotFoundSchool (school: string) =
     Log.Information("{0} timetable not found", school)
 
@@ -22,7 +24,7 @@ let private filterHrefElements (schoolPage: HtmlDocument) =
     |> Seq.choose (fun x ->
         x.TryGetAttribute("href")
         |> Option.map (fun a -> x.InnerText(), a.Value()))
-    |> Seq.filter (fun (text, _) -> text = "Plan Lekcji")
+    |> Seq.filter (fun (text, _) -> List.contains (text.ToLower()) timetableKeywords)
     |> Seq.map snd
     |> Seq.exactlyOne
 

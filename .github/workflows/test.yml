@@ -1,7 +1,6 @@
 ﻿name: Test
 on:
   push:
-  pull_request:
 jobs:
   utility:
     runs-on: ubuntu-latest

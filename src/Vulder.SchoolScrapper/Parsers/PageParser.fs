@@ -6,18 +6,18 @@ open Serilog
 open Vulder.SchoolScrapper.Models.School
 open Vulder.SchoolScrapper.Models.Timetable
 
-let logNotFoundSchool (school: string) =
+let private logNotFoundSchool (school: string) =
     Log.Information("{0} timetable not found", school)
 
-let logFoundTimetableWithDifferentSchema (school: string) =
+let private logFoundTimetableWithDifferentSchema (school: string) =
     Log.Warning("{0} Found timetable with different schema", school)
 
-let isVulcanTimetableUrl (page: HtmlDocument) =
+let private isVulcanTimetableUrl (page: HtmlDocument) =
     Regex.IsMatch(page.Body.ToString(), "(Optivum|VULCAN)")
 
-let downloadHtmlDocument (url: string) = HtmlDocument.Load url
+let private downloadHtmlDocument (url: string) = HtmlDocument.Load url
 
-let filterHrefElements (schoolPage: HtmlDocument) =
+let private filterHrefElements (schoolPage: HtmlDocument) =
     schoolPage.Descendants [ "a" ]
     |> Seq.choose (fun x ->
         x.TryGetAttribute("href")

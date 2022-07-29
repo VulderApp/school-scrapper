@@ -5,9 +5,9 @@ open System.IO
 open Serilog
 
 [<Literal>]
-let dateFormat = "yyyy-MM-ddTHHmmss"
+let private dateFormat = "yyyy-MM-ddTHHmmss"
 
-let filePath = $"./Logs/{DateTime.Now.ToString(dateFormat)}.txt"
+let private filePath = $"./Logs/{DateTime.Now.ToString(dateFormat)}.txt"
 
 let setupLogging =
     Log.Logger <-

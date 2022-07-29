@@ -5,12 +5,12 @@ open FSharp.Data
 open Vulder.SchoolScrapper.Models.School
 
 [<Literal>]
-let URL_REGEX =
+let private URL_REGEX =
     @"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
 
-let matchUrl (url: string) = Regex.IsMatch(url, URL_REGEX)
+let private matchUrl (url: string) = Regex.IsMatch(url, URL_REGEX)
 
-let parsedSchoolsCsv (file: string) =
+let private parsedSchoolsCsv (file: string) =
     CsvFile.Load(file, separators = ";").Cache()
 
 let parseSchoolList (file: string) : seq<School> =

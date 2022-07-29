@@ -1,0 +1,19 @@
+﻿name: Test
+on:
+  push:
+  pull_request:
+jobs:
+  utility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Test project
+        run: dotnet test --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2

@@ -1,8 +1,8 @@
 ﻿module Vulder.SchoolScrapper.Commands.SchoolTimetableScrapper
 
 open Serilog
-open Vulder.SchoolScrapper.Parser.CsvReader
-open Vulder.SchoolScrapper.Parser.PageParser
+open Vulder.SchoolScrapper.Parsers.CsvReader
+open Vulder.SchoolScrapper.Parsers.PageParser
 open Vulder.SchoolScrapper.Output.SaveFile
 
 
@@ -10,7 +10,7 @@ let schoolTimetableScrapper (csvPath: string, outputPath: string) =
     Log.Information("Pasring CSV file from {0}", csvPath)
 
     let parsedSchoolList =
-        parsedSchoolList csvPath |> List.ofSeq
+        parseSchoolList csvPath |> List.ofSeq
 
     Log.Information("Imported {0} schools from {1} with valid URLs", parsedSchoolList.Length, csvPath)
 

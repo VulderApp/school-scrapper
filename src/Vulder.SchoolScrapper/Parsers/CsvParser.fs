@@ -1,4 +1,4 @@
-﻿module Vulder.SchoolScrapper.Parser.CsvReader
+﻿module Vulder.SchoolScrapper.Parsers.CsvReader
 
 open System.Text.RegularExpressions
 open FSharp.Data
@@ -13,7 +13,7 @@ let matchUrl (url: string) = Regex.IsMatch(url, URL_REGEX)
 let parsedSchoolsCsv (file: string) =
     CsvFile.Load(file, separators = ";").Cache()
 
-let parsedSchoolList (file: string) : seq<School> =
+let parseSchoolList (file: string) : seq<School> =
     seq {
         for row in parsedSchoolsCsv(file).Rows do
             let www = row.GetColumn "Strona www"

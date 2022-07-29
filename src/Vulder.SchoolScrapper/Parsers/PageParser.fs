@@ -1,4 +1,4 @@
-﻿module Vulder.SchoolScrapper.Parser.PageParser
+﻿module Vulder.SchoolScrapper.Parsers.PageParser
 
 open System.Text.RegularExpressions
 open FSharp.Data

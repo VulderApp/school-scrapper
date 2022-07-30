@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{28E9C261-7A5
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Vulder.SchoolScrapper", "src\Vulder.SchoolScrapper\Vulder.SchoolScrapper.fsproj", "{E0A1AB16-7D7B-4E66-A8C1-D6F7135BCDBE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1297EF9A-20E7-4B65-95D2-CE487CCF5B4F}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Vulder.SchoolScrapper.Tests", "tests\Vulder.SchoolScrapper.Tests\Vulder.SchoolScrapper.Tests.fsproj", "{9A3E64E8-0F54-42B7-AE98-EC948A3FB616}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +24,13 @@ Global
 		{E0A1AB16-7D7B-4E66-A8C1-D6F7135BCDBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0A1AB16-7D7B-4E66-A8C1-D6F7135BCDBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0A1AB16-7D7B-4E66-A8C1-D6F7135BCDBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A3E64E8-0F54-42B7-AE98-EC948A3FB616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A3E64E8-0F54-42B7-AE98-EC948A3FB616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A3E64E8-0F54-42B7-AE98-EC948A3FB616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A3E64E8-0F54-42B7-AE98-EC948A3FB616}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E0A1AB16-7D7B-4E66-A8C1-D6F7135BCDBE} = {28E9C261-7A5A-472E-AE9D-F91DED155B61}
+		{9A3E64E8-0F54-42B7-AE98-EC948A3FB616} = {1297EF9A-20E7-4B65-95D2-CE487CCF5B4F}
 	EndGlobalSection
 EndGlobal

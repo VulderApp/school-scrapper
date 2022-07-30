@@ -22,6 +22,4 @@ let parseSchoolList (file: string) : seq<School> =
                 yield
                     { Name = (row.GetColumn "Nazwa")
                       WWW = www }
-
-            ()
     }

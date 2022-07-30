@@ -14,10 +14,10 @@ let private logNotFoundSchool (school: string) =
 let private logFoundTimetableWithDifferentSchema (school: string) =
     Log.Warning("{0} Found timetable with different schema", school)
 
-let private isVulcanTimetableUrl (page: HtmlDocument) =
-    Regex.IsMatch(page.Body.ToString(), "(Optivum|VULCAN)")
+let private isVulcanTimetableUrl (page: string) =
+    Regex.IsMatch(page, "(Optivum|VULCAN)")
 
-let private downloadHtmlDocument (url: string) = HtmlDocument.Load url
+let private downloadHtmlDocument (url: string) = HtmlDocument.AsyncLoad url |> Async.RunSynchronously
 
 let private filterHrefElements (schoolPage: HtmlDocument) =
     schoolPage.Descendants [ "a" ]
@@ -43,7 +43,10 @@ let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
                 ()
 
             let timetablePage =
-                downloadHtmlDocument timetableUrl
+                Http.AsyncRequestString timetableUrl
+                |> Async.RunSynchronously
+                
+            printfn "%s" (timetablePage)
 
             let isVulcanTimetable =
                 isVulcanTimetableUrl timetablePage

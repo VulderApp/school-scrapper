@@ -46,8 +46,6 @@ let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
                 Http.AsyncRequestString timetableUrl
                 |> Async.RunSynchronously
                 
-            printfn "%s" (timetablePage)
-
             let isVulcanTimetable =
                 isVulcanTimetableUrl timetablePage
 

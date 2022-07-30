@@ -50,9 +50,8 @@ let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
 
             if not isVulcanTimetable then
                 logFoundTimetableWithDifferentSchema school.Name
-                ()
-
-            yield
-                { School = school.Name
-                  Url = timetableUrl }
+            else
+                yield
+                    { School = school.Name
+                      Url = timetableUrl }
     }

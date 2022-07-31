@@ -17,6 +17,7 @@
         <Compile Include="Arguments.fs" />
         <Compile Include="Logger.fs" />
         <Compile Include="Commands\SchoolTimetableScrapper.fs" />
+        <Compile Include="Commands\Version.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 

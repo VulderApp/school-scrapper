@@ -6,7 +6,12 @@ open Serilog
 open Vulder.SchoolScrapper.Models.School
 open Vulder.SchoolScrapper.Models.Timetable
 
-let timetableKeywords = ["plan lekcji"; "plan zajęć"; "podział godzin"; "plan"; "podział"]
+let timetableKeywords =
+    [ "plan lekcji"
+      "plan zajęć"
+      "podział godzin"
+      "plan"
+      "podział" ]
 
 let private logNotFoundSchool (school: string) =
     Log.Information("{0} timetable not found", school)
@@ -14,10 +19,11 @@ let private logNotFoundSchool (school: string) =
 let private logFoundTimetableWithDifferentSchema (school: string) =
     Log.Warning("{0} Found timetable with different schema", school)
 
-let private isVulcanTimetableUrl (page: string) =
-    Regex.IsMatch(page, "(Optivum|VULCAN)")
+let private isVulcanTimetableUrl (page: string) = Regex.IsMatch(page, "(Optivum|VULCAN)")
 
-let private downloadHtmlDocument (url: string) = HtmlDocument.AsyncLoad url |> Async.RunSynchronously
+let private downloadHtmlDocument (url: string) =
+    HtmlDocument.AsyncLoad url
+    |> Async.RunSynchronously
 
 let private filterHrefElements (schoolPage: HtmlDocument) =
     schoolPage.Descendants [ "a" ]
@@ -45,7 +51,7 @@ let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
             let timetablePage =
                 Http.AsyncRequestString timetableUrl
                 |> Async.RunSynchronously
-                
+
             let isVulcanTimetable =
                 isVulcanTimetableUrl timetablePage
 

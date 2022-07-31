@@ -3,4 +3,7 @@
 open System.Reflection
 
 let version () =
-    printfn "%s" (Assembly.GetExecutingAssembly().GetName().Version |> string)
+    printfn
+        "%s"
+        (Assembly.GetExecutingAssembly().GetName().Version
+         |> string)

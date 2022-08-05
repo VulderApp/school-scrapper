@@ -1,5 +1,6 @@
 ﻿module Vulder.SchoolScrapper.Parsers.PageParser
 
+open System
 open System.Text.RegularExpressions
 open FSharp.Data
 open Serilog
@@ -12,6 +13,9 @@ let timetableKeywords =
       "podział godzin"
       "plan"
       "podział" ]
+
+let private logErrorUrlValidation (school: string) =
+    Log.Error("{0} problem with URL validation", school)
 
 let private logNotFoundSchool (school: string) =
     Log.Information("{0} timetable not found", school)
@@ -47,9 +51,14 @@ let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
                 logNotFoundSchool school.Name
             else
                 ()
-
+               
+            let baseWWW = Uri(school.WWW)
+            let (parsed, timetableUri) = Uri.TryCreate(baseWWW, timetableUrl)
+            
+            if not parsed then logErrorUrlValidation school.Name
+            
             let timetablePage =
-                Http.AsyncRequestString timetableUrl
+                Http.AsyncRequestString timetableUri.AbsoluteUri 
                 |> Async.RunSynchronously
 
             let isVulcanTimetable =
@@ -60,5 +69,5 @@ let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
             else
                 yield
                     { School = school.Name
-                      Url = timetableUrl }
+                      Url = timetableUri.AbsolutePath }
     }

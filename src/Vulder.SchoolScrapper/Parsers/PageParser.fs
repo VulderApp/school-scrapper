@@ -3,11 +3,13 @@
 open System
 open System.Text.RegularExpressions
 open FSharp.Data
+open Microsoft.FSharp.Core
 open Serilog
 open Vulder.SchoolScrapper.Models.School
 open Vulder.SchoolScrapper.Models.Timetable
+open Vulder.SchoolScrapper.Parsers.SearchResultParser
 
-let timetableKeywords =
+let private timetableKeywords =
     [ "plan lekcji"
       "plan zajęć"
       "podział godzin"
@@ -38,6 +40,21 @@ let private filterHrefElements (schoolPage: HtmlDocument) =
     |> Seq.map snd
     |> Seq.exactlyOne
 
+let private validateOptivumTimetable (timetableUrl: string) : bool =
+    try
+        let timetablePage =
+            Http.AsyncRequestString timetableUrl
+            |> Async.RunSynchronously
+
+        let isVulcanTimetable =
+            isVulcanTimetableUrl timetablePage
+
+        isVulcanTimetable
+    with
+    | :? UriFormatException ->
+        logErrorUrlValidation (timetableUrl)
+        false
+
 let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
     seq {
         for school in schools do
@@ -49,25 +66,33 @@ let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
 
             if timetableUrl = "" then
                 logNotFoundSchool school.Name
-            else
                 ()
-               
+
             let baseWWW = Uri(school.WWW)
-            let (parsed, timetableUri) = Uri.TryCreate(baseWWW, timetableUrl)
-            
-            if not parsed then logErrorUrlValidation school.Name
-            
-            let timetablePage =
-                Http.AsyncRequestString timetableUri.AbsoluteUri 
-                |> Async.RunSynchronously
 
-            let isVulcanTimetable =
-                isVulcanTimetableUrl timetablePage
+            let (parsed, timetableUri) =
+                Uri.TryCreate(baseWWW, timetableUrl)
 
-            if not isVulcanTimetable then
-                logFoundTimetableWithDifferentSchema school.Name
-            else
+            if not parsed then
+                logErrorUrlValidation school.Name
+
+            if validateOptivumTimetable (timetableUri.AbsoluteUri) then
                 yield
                     { School = school.Name
-                      Url = timetableUri.AbsolutePath }
+                      Url = timetableUri.AbsoluteUri }
+
+            let (searchName, searchUrl) =
+                searchResultParser (school.Name, timetableUri.AbsoluteUri)
+
+            if searchName |> String.IsNullOrEmpty then
+                logFoundTimetableWithDifferentSchema school.Name
+                ()
+
+            let validTimetable =
+                validateOptivumTimetable searchUrl
+
+            if validTimetable then
+                yield
+                    { School = school.Name
+                      Url = searchUrl }
     }

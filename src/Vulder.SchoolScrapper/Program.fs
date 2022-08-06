@@ -16,7 +16,7 @@ let main argv =
 
     match parser.ParseCommandLine argv with
     | p when p.Contains(Csv_File) && p.Contains(Output_Path) ->
-        schoolTimetableScrapper (p.GetResult(Csv_File), p.GetResult(Output_Path))
+        schoolTimetableScrapper (p.GetResult(Csv_File), p.GetResult(Output_Path), p.Contains(Google_Search))
     | p when p.Contains(Version) -> version ()
     | _ -> printfn "%s" (parser.PrintUsage())
 

@@ -52,10 +52,10 @@ let private validateOptivumTimetable (timetableUrl: string) : bool =
         isVulcanTimetable
     with
     | :? UriFormatException ->
-        logErrorUrlValidation (timetableUrl)
+        logErrorUrlValidation timetableUrl
         false
 
-let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
+let vulcanTimetableSchools (schools: School List, enableGoogleSearching: bool) : seq<Timetable> =
     seq {
         for school in schools do
             let schoolPage =
@@ -70,29 +70,30 @@ let vulcanTimetableSchools (schools: School List) : seq<Timetable> =
 
             let baseWWW = Uri(school.WWW)
 
-            let (parsed, timetableUri) =
+            let parsed, timetableUri =
                 Uri.TryCreate(baseWWW, timetableUrl)
 
             if not parsed then
                 logErrorUrlValidation school.Name
 
-            if validateOptivumTimetable (timetableUri.AbsoluteUri) then
+            if validateOptivumTimetable timetableUri.AbsoluteUri then
                 yield
                     { School = school.Name
                       Url = timetableUri.AbsoluteUri }
 
-            let (searchName, searchUrl) =
-                searchResultParser (school.Name, timetableUri.AbsoluteUri)
+            if enableGoogleSearching then
+                let searchName, searchUrl =
+                    searchResultParser (school.Name, timetableUri.AbsoluteUri)
 
-            if searchName |> String.IsNullOrEmpty then
-                logFoundTimetableWithDifferentSchema school.Name
-                ()
+                if searchName |> String.IsNullOrEmpty then
+                    logFoundTimetableWithDifferentSchema school.Name
+                    ()
 
-            let validTimetable =
-                validateOptivumTimetable searchUrl
+                let validTimetable =
+                    validateOptivumTimetable searchUrl
 
-            if validTimetable then
-                yield
-                    { School = school.Name
-                      Url = searchUrl }
+                if validTimetable then
+                    yield
+                        { School = school.Name
+                          Url = searchUrl }
     }

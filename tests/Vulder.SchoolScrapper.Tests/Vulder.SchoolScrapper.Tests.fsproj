@@ -1,48 +1,52 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
 
-    <IsPackable>false</IsPackable>
-    <GenerateProgramFile>false</GenerateProgramFile>
-  </PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <GenerateProgramFile>false</GenerateProgramFile>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="Parsers\CsvParserTests.fs" />
-    <Compile Include="Parsers\PageParserTests.fs" />
-    <Compile Include="Program.fs" />
-    <Content Include="Files\school.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Files\test.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Files\timetable.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Parsers\CsvParserTests.fs"/>
+        <Compile Include="Parsers\PageParserTests.fs"/>
+        <Compile Include="Parsers\SearchResultParserTests.fs"/>
+        <Compile Include="Program.fs"/>
+        <Content Include="Files\school.html">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Files\search.html">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Files\test.csv">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Files\timetable.html">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" Version="3.1.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="WireMock.Net" Version="1.5.2" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="3.1.2">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Update="FSharp.Core" Version="6.0.5" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="coverlet.msbuild" Version="3.1.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0"/>
+        <PackageReference Include="WireMock.Net" Version="1.5.3"/>
+        <PackageReference Include="xunit" Version="2.4.2"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="3.1.2">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Update="FSharp.Core" Version="6.0.5"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Vulder.SchoolScrapper\Vulder.SchoolScrapper.fsproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Vulder.SchoolScrapper\Vulder.SchoolScrapper.fsproj"/>
+    </ItemGroup>
 
 </Project>

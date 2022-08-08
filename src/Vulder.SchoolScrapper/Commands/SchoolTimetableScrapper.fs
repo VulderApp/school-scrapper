@@ -5,8 +5,7 @@ open Vulder.SchoolScrapper.Parsers.CsvReader
 open Vulder.SchoolScrapper.Parsers.PageParser
 open Vulder.SchoolScrapper.Output.SaveFile
 
-
-let schoolTimetableScrapper (csvPath: string, outputPath: string) =
+let schoolTimetableScrapper (csvPath: string, outputPath: string, enableGoogleSearch: bool) =
     Log.Information("Pasring CSV file from {0}", csvPath)
 
     let parsedSchoolList =
@@ -15,7 +14,7 @@ let schoolTimetableScrapper (csvPath: string, outputPath: string) =
     Log.Information("Imported {0} schools from {1} with valid URLs", parsedSchoolList.Length, csvPath)
 
     let timetables =
-        vulcanTimetableSchools parsedSchoolList
+        vulcanTimetableSchools (parsedSchoolList, enableGoogleSearch)
         |> List.ofSeq
 
     Log.Information("Collected {0} schools with valid Vulcan Optivum timetable", timetables.Length)

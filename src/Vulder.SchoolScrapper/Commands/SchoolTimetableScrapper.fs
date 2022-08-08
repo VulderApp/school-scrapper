@@ -17,7 +17,10 @@ let schoolTimetableScrapper (csvPath: string, outputPath: string, enableGoogleSe
         vulcanTimetableSchools (parsedSchoolList, enableGoogleSearch)
         |> List.ofSeq
 
-    Log.Information("Collected {0} schools with valid Vulcan Optivum timetable", timetables.Length)
-    Log.Information("Saving schools to {0}", outputPath)
-    saveSchoolsToFile (outputPath, timetables)
-    Log.Information("Saved")
+    if timetables.IsEmpty then
+        Log.Information("No schools collected")
+    else
+        Log.Information("Collected {0} schools with valid Vulcan Optivum timetable", timetables.Length)
+        Log.Information("Saving schools to {0}", outputPath)
+        saveSchoolsToFile (outputPath, timetables)
+        Log.Information("Saved")

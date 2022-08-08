@@ -9,28 +9,32 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Models\School.fs"/>
-        <Compile Include="Models\Timetable.fs"/>
-        <Compile Include="Output\SaveFile.fs"/>
-        <Compile Include="Parsers\SearchResultParser.fs"/>
-        <Compile Include="Parsers\CsvParser.fs"/>
-        <Compile Include="Parsers\PageParser.fs"/>
-        <Compile Include="Arguments.fs"/>
-        <Compile Include="Logger.fs"/>
-        <Compile Include="Commands\SchoolTimetableScrapper.fs"/>
-        <Compile Include="Commands\Version.fs"/>
-        <Compile Include="Program.fs"/>
+        <Compile Include="Models\School.fs" />
+        <Compile Include="Models\Timetable.fs" />
+        <Compile Include="Output\SaveFile.fs" />
+        <Compile Include="Parsers\SearchResultParser.fs" />
+        <Compile Include="Parsers\CsvParser.fs" />
+        <Compile Include="Parsers\PageParser.fs" />
+        <Compile Include="Arguments.fs" />
+        <Compile Include="Logger.fs" />
+        <Compile Include="Commands\SchoolTimetableScrapper.fs" />
+        <Compile Include="Commands\Version.fs" />
+        <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Argu" Version="6.1.1"/>
-        <PackageReference Include="Destructurama.FSharp" Version="1.2.0"/>
-        <PackageReference Include="FSharp.Data" Version="4.2.9"/>
-        <PackageReference Include="FSharp.Json" Version="0.4.1"/>
-        <PackageReference Include="Serilog" Version="2.11.0"/>
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1"/>
-        <PackageReference Update="FSharp.Core" Version="6.0.5"/>
-        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0"/>
+        <PackageReference Include="Argu" Version="6.1.1" />
+        <PackageReference Include="Destructurama.FSharp" Version="1.2.0" />
+        <PackageReference Include="FSharp.Data" Version="4.2.9" />
+        <PackageReference Include="FSharp.Json" Version="0.4.1" />
+        <PackageReference Include="Serilog" Version="2.11.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+        <PackageReference Update="FSharp.Core" Version="6.0.5" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="Vulder.SchoolScrapper.Tests" />
     </ItemGroup>
 
 </Project>

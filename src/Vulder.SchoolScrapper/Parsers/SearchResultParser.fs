@@ -3,11 +3,11 @@
 open System.Web
 open FSharp.Data
 
-let private encodeGoogleQuery (query: string) =
-    $"http://www.google.com/search?q={HttpUtility.UrlEncode(query)}"
+let internal encodeGoogleQuery (query: string) =
+    $"http://www.google.com/search?q={HttpUtility.UrlEncode(query)}+Plan+lekcji"
 
 // Thanks to: https://fsprojects.github.io/FSharp.Data/library/HtmlParser.html
-let private filterSearchResult (page: HtmlDocument, previousTimetableUrl: string) =
+let internal filterSearchResult (page: HtmlDocument, previousTimetableUrl: string) =
     page.Descendants [ "a" ]
     |> Seq.choose (fun x ->
         x.TryGetAttribute("href")
@@ -28,7 +28,7 @@ let private filterSearchResult (page: HtmlDocument, previousTimetableUrl: string
 
 let searchResultParser (school: string, timetableUrl: string) =
     let encodedUrl =
-        encodeGoogleQuery (school + " Plan lekcji")
+        encodeGoogleQuery school
 
     let googleSearchPage =
         HtmlDocument.AsyncLoad encodedUrl

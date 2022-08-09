@@ -51,9 +51,10 @@ jobs:
     needs: [windows, macos, ubuntu]
     runs-on: ${{ matrix.os }}
     steps:
+      - uses: actions/checkout@v2
       - id: commit
         uses: pr-mpt/actions-commit-hash@v1
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ steps.commit.outputs.short }}
-          path: ./release
+          name: ${{ runner.os }}-${{ steps.commit.outputs.short }}
+          path: release

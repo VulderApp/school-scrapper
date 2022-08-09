@@ -2,12 +2,8 @@ name: Build
 on:
   push:
 jobs:
-  app:
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-        dotnet-runtime: [win-x64, osx.11.0-x64, linux-x64]
-    runs-on: ${{ matrix.os }}
+  windows:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET SDK
@@ -19,8 +15,36 @@ jobs:
       - name: Build project
         run: dotnet build -c Release --no-restore
       - name: Publish project
-        run: dotnet publish .\src\Vulder.SchoolScrapper\ -c Release -r ${{ matrix.dotnet-runtime }} --self-contained true -p:PublishSingleFile=true -o release
-  publish:
+        run: dotnet publish ./src/Vulder.SchoolScrapper -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o release
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build project
+        run: dotnet build -c Release --no-restore
+      - name: Publish project
+        run: dotnet publish ./src/Vulder.SchoolScrapper -c Release -r osx.11.0-x64 --self-contained true -p:PublishSingleFile=true -o release
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build project
+        run: dotnet build -c Release --no-restore
+      - name: Publish project
+        run: dotnet publish ./src/Vulder.SchoolScrapper -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o release
+  deploy-artifact:
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]

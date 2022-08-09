@@ -1,6 +1,5 @@
 name: Build and Deploy
-on:
-  push:
+on: [workflow_dispatch]
 jobs:
   windows:
     runs-on: windows-latest
@@ -9,7 +8,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          key: ${{ runner.os }}-nuget
           restore-keys: |
             ${{ runner.os }}-nuget
       - name: Setup .NET SDK
@@ -35,7 +34,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          key: ${{ runner.os }}-nuget
           restore-keys: |
             ${{ runner.os }}-nuget
       - name: Setup .NET SDK
@@ -61,7 +60,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          key: ${{ runner.os }}-nuget
           restore-keys: |
             ${{ runner.os }}-nuget
       - name: Setup .NET SDK

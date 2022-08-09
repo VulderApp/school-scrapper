@@ -1,4 +1,4 @@
-name: Build
+name: Build and Deploy
 on:
   push:
 jobs:
@@ -16,6 +16,12 @@ jobs:
         run: dotnet build -c Release --no-restore
       - name: Publish project
         run: dotnet publish ./src/Vulder.SchoolScrapper -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o release
+      - id: commit
+        uses: pr-mpt/actions-commit-hash@v1
+      - uses: actions/upload-artifact@v3
+        with:
+          name: windows-x64-${{ steps.commit.outputs.short }}
+          path: release
   macos:
     runs-on: macos-latest
     steps:
@@ -30,8 +36,17 @@ jobs:
         run: dotnet build -c Release --no-restore
       - name: Publish project
         run: dotnet publish ./src/Vulder.SchoolScrapper -c Release -r osx.11.0-x64 --self-contained true -p:PublishSingleFile=true -o release
+      - id: commit
+        uses: pr-mpt/actions-commit-hash@v1
+      - uses: actions/upload-artifact@v3
+        with:
+          name: macos-x64-${{ steps.commit.outputs.short }}
+          path: release
   ubuntu:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET SDK
@@ -44,17 +59,9 @@ jobs:
         run: dotnet build -c Release --no-restore
       - name: Publish project
         run: dotnet publish ./src/Vulder.SchoolScrapper -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o release
-  deploy-artifact:
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-    needs: [windows, macos, ubuntu]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v2
       - id: commit
         uses: pr-mpt/actions-commit-hash@v1
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }}-${{ steps.commit.outputs.short }}
+          name: linux-x64-${{ steps.commit.outputs.short }}
           path: release

@@ -43,10 +43,7 @@ jobs:
           name: macos-x64-${{ steps.commit.outputs.short }}
           path: release
   ubuntu:
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET SDK

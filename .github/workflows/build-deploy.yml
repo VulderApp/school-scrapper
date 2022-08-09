@@ -48,7 +48,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
-    needs: [windows, macos, linux]
+    needs: [windows, macos, ubuntu]
     runs-on: ${{ matrix.os }}
     steps:
       - id: commit

@@ -1,0 +1,35 @@
+name: Test
+on:
+  push:
+jobs:
+  app:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        dotnet-runtime: [win-x64, osx.11.0-x64, linux-x64]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build project
+        run: dotnet build -c Release --no-restore
+      - name: Publish project
+        run: dotnet publish .\src\Vulder.SchoolScrapper\ -c Release -r ${{ matrix.dotnet-runtime }} --self-contained true -p:PublishSingleFile=true -o release
+  publish:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    needs: app
+    runs-on: ${{ matrix.os }}
+    steps:
+      - id: commit
+        uses: pr-mpt/actions-commit-hash@v1
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ steps.commit.outputs.short }}
+          path: ./release

@@ -1,0 +1,85 @@
+name: Build and Deploy
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget
+          restore-keys: |
+            ${{ runner.os }}-nuget
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build project
+        run: dotnet build -c Release --no-restore
+      - name: Publish project
+        run: dotnet publish ./src/Vulder.SchoolScrapper -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o release
+      - id: commit
+        uses: pr-mpt/actions-commit-hash@v1
+      - uses: actions/upload-artifact@v3
+        with:
+          name: windows-x64-${{ steps.commit.outputs.short }}
+          path: release
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget
+          restore-keys: |
+            ${{ runner.os }}-nuget
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build project
+        run: dotnet build -c Release --no-restore
+      - name: Publish project
+        run: dotnet publish ./src/Vulder.SchoolScrapper -c Release -r osx.11.0-x64 --self-contained true -p:PublishSingleFile=true -o release
+      - id: commit
+        uses: pr-mpt/actions-commit-hash@v1
+      - uses: actions/upload-artifact@v3
+        with:
+          name: macos-x64-${{ steps.commit.outputs.short }}
+          path: release
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget
+          restore-keys: |
+            ${{ runner.os }}-nuget
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build project
+        run: dotnet build -c Release --no-restore
+      - name: Publish project
+        run: dotnet publish ./src/Vulder.SchoolScrapper -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o release
+      - id: commit
+        uses: pr-mpt/actions-commit-hash@v1
+      - uses: actions/upload-artifact@v3
+        with:
+          name: linux-x64-${{ steps.commit.outputs.short }}
+          path: release
